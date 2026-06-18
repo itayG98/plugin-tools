@@ -2,7 +2,7 @@
   import { createEventDispatcher, onMount } from 'svelte';
   import { ShapeType } from '@annotorious/annotorious';
   import { getMaskDimensions } from '@annotorious/annotorious';
-  import type { Circle, DrawingMode, Transform } from '@annotorious/annotorious';
+  import type { Ellipse, Circle, DrawingMode, Transform } from '@annotorious/annotorious';
 
   const dispatch = createEventDispatcher<{ create: Circle }>();
   
@@ -120,32 +120,32 @@
     }
   }
 
-  const stopDrawing = () => {
-    // Require 4x4 pixels minimum
-    if (w * h > 15) {
-      const shape = {
-        type: 'CIRCLE' as any, 
-        geometry: {
-          bounds: {
-            minX: x, 
-            minY: y,
-            maxX: x + w,
-            maxY: y + h
-          },
-          cx: x + w / 2,
-          cy: y + h / 2,
-          r: w / 2
-        }
-      } as Circle;
-
-      dispatch('create', shape);
-    }
-
-    origin = undefined;
-    anchor = undefined;
-
-    lastMoveEvent = undefined;
+const stopDrawing = () => {
+  // Require 4x4 pixels minimum
+  if (w * h > 15) {
+    const shape = {
+      type: 'ELLIPSE', // Must match the internal registry string exactly
+      geometry: {
+        isCircle: true,
+        bounds: {
+          minX: x, 
+          minY: y,
+          maxX: x + w,
+          maxY: y + h
+        },
+        cx: x + w / 2,
+        cy: y + h / 2,
+        rx: w / 2, 
+        ry: h / 2
+      }
+    } as Ellipse; 
+    dispatch('create', shape);
   }
+
+  origin = undefined;
+  anchor = undefined;
+  lastMoveEvent = undefined;
+}
 
   const onKeyDown = (evt: KeyboardEvent) => {
     if (evt.key === 'Control') {

@@ -13,70 +13,71 @@
 
   const editor = (circle: Shape, handle: string, delta: [number, number]) => {
     const initialBounds = circle.geometry.bounds;
-
-    let [x0, y0] = [initialBounds.minX, initialBounds.minY];
-    let [x1, y1] = [initialBounds.maxX, initialBounds.maxY];
+    const isCircle = (circle.geometry as Circle['geometry'] & { isCircle?: boolean }).isCircle === true;
+    const initialCx = circle.geometry.cx;
+    const initialCy = circle.geometry.cy;
+    const initialR = circle.geometry.r;
 
     const [dx, dy] = delta;
 
     if (handle === 'SHAPE') {
-      x0 += dx;
-      x1 += dx;
-      y0 += dy;
-      y1 += dy;
-    } else {
-      switch (handle) {
-        case 'TOP': {
-          y0 += dy;
-          break;
-        }
+      const x = initialBounds.minX + dx;
+      const y = initialBounds.minY + dy;
 
-        case 'BOTTOM': {
-          y1 += dy;
-          break;
+      return {
+        ...circle,
+        geometry: {
+          ...circle.geometry,
+          cx: initialCx + dx,
+          cy: initialCy + dy,
+          r: initialR,
+          isCircle,
+          bounds: {
+            minX: x,
+            minY: y,
+            maxX: x + 2 * initialR,
+            maxY: y + 2 * initialR
+          }
         }
-
-        case 'LEFT': {
-          x0 += dx;
-          break;
-        }
-
-        case 'RIGHT': {
-          x1 += dx;
-          break;
-        }
-      }
+      };
     }
 
-    let w = Math.abs(x1 - x0);
-    let h = Math.abs(y1 - y0);
+    let r = initialR;
 
-    let cx = (x0 + x1) / 2;
-    let cy = (y0 + y1) / 2;
+    switch (handle) {
+      case 'TOP':
+        r = Math.max(0, Math.abs(initialCy - (initialBounds.minY + dy)));
+        break;
 
+      case 'BOTTOM':
+        r = Math.max(0, Math.abs((initialBounds.maxY + dy) - initialCy));
+        break;
 
-    if (handle === 'TOP' || handle === 'BOTTOM') {
-      w = h; 
-      cx = (initialBounds.minX + initialBounds.maxX) / 2; 
-    } else if (handle === 'LEFT' || handle === 'RIGHT') {
-      h = w; 
-      cy = (initialBounds.minY + initialBounds.maxY) / 2; 
+      case 'LEFT':
+        r = Math.max(0, Math.abs(initialCx - (initialBounds.minX + dx)));
+        break;
+
+      case 'RIGHT':
+        r = Math.max(0, Math.abs((initialBounds.maxX + dx) - initialCx));
+        break;
     }
 
-    const r = w / 2;
-    const x = cx - r;
-    const y = cy - r;
+    const x = initialCx - r;
+    const y = initialCy - r;
 
     return {
       ...circle,
       geometry: {
         ...circle.geometry,
-        cx, cy, r,
+        cx: initialCx,
+        cy: initialCy,
+        r,
+        isCircle,
         bounds: {
           minX: x,
           minY: y,
-          maxX: x + w,
-          maxY: y + h
+          maxX: x + 2 * r,
+          maxY: y + 2 * r
         }
       }
     };
