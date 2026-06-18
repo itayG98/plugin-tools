@@ -16,6 +16,7 @@ export const mountPlugin = <
   anno.registerShapeEditor(ShapeType.ELLIPSE, EllipseEditor as typeof SvelteComponent);
 
   anno.registerDrawingTool('circle', RubberbandCircle as typeof SvelteComponent);
+  //@ts-ignore-next-line
   anno.registerShapeEditor(ShapeType.CIRCLE, CircleEditor as typeof SvelteComponent);
 
   anno.registerDrawingTool('line', RubberbandLine as typeof SvelteComponent);
