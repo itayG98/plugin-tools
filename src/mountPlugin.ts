@@ -4,6 +4,7 @@ import type { OpenSeadragonAnnotator } from '@annotorious/openseadragon';
 import { EllipseEditor, RubberbandEllipse } from './ellipse';
 import { LineEditor, RubberbandLine } from './line';
 import { RubberbandPath, PathEditor } from './path';
+import { CircleEditor, RubberbandCircle } from './circle';
 
 export const mountPlugin = <
   I extends Annotation = ImageAnnotation,
@@ -13,6 +14,9 @@ export const mountPlugin = <
 ) => {
   anno.registerDrawingTool('ellipse', RubberbandEllipse as typeof SvelteComponent);
   anno.registerShapeEditor(ShapeType.ELLIPSE, EllipseEditor as typeof SvelteComponent);
+
+  anno.registerDrawingTool('circle', RubberbandCircle as typeof SvelteComponent);
+  anno.registerShapeEditor(ShapeType.CIRCLE, CircleEditor as typeof SvelteComponent);
 
   anno.registerDrawingTool('line', RubberbandLine as typeof SvelteComponent);
   anno.registerShapeEditor(ShapeType.LINE, LineEditor as typeof SvelteComponent);
