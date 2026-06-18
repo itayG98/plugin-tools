@@ -227,7 +227,8 @@
       geometry: {
         bounds,
         points,
-        closed: geom.closed
+        closed: geom.closed,
+        isPolyline : geom.isPolyline
       }
     };
 
@@ -329,7 +330,8 @@
       geometry: {
         bounds,
         points,
-        closed: geom.closed
+        closed: geom.closed,
+        isPolyline : geom.isPolyline
       }
     } as Polyline;
   }
@@ -349,7 +351,7 @@ const onAddPoint = (midpointIdx: number) => async (evt: PointerEvent) => {
 
     dispatch('change', {
       ...shape,
-      geometry: { points, bounds, closed: geom.closed }
+      geometry: { points, bounds, closed: geom.closed , isPolyline : geom.isPolyline }
     });
 
     await tick();
@@ -385,7 +387,8 @@ const onAddPoint = (midpointIdx: number) => async (evt: PointerEvent) => {
       geometry: { 
         closed: shape.geometry.closed,
         bounds,
-        points 
+        points ,
+        isPolyline : geom.isPolyline
       }
     });
 

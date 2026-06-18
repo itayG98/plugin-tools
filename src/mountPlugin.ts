@@ -5,7 +5,7 @@ import { EllipseEditor, RubberbandEllipse } from './ellipse';
 import { LineEditor, RubberbandLine } from './line';
 import { RubberbandPath, PathEditor } from './path';
 import { CircleEditor, RubberbandCircle } from './circle';
-import { PolylineEditor, RubberbandPolyline } from './polyline';
+import { RubberbandPolyline } from './polyline';
 
 export const mountPlugin = <
   I extends Annotation = ImageAnnotation,
@@ -26,7 +26,6 @@ export const mountPlugin = <
   anno.registerDrawingTool('path', RubberbandPath as typeof SvelteComponent);
   anno.registerShapeEditor(ShapeType.POLYLINE, PathEditor as typeof SvelteComponent);
 
+  // Polyline uses the same PathEditor - the isPolyline flag disables curve editing
   anno.registerDrawingTool('polyline', RubberbandPolyline as typeof SvelteComponent);
-  //@ts-ignore-next-line
-  anno.registerShapeEditor('polyline', PolylineEditor as typeof SvelteComponent);
 }
