@@ -19,11 +19,15 @@ Draw ellipses or circles.
 - Hold `SHIFT` – Constrain aspect ratio to circle
 - Hold `CTRL` – Draw from the center outward
 
-### 2. Line
+### 2. Circle
+
+Draw circles.
+
+### 3. Line
 
 Draw a straight line between two points.
 
-### 3. Path
+### 4. Path
 
 Create polylines made of straight or curved segments.
 
@@ -42,6 +46,22 @@ Create polylines made of straight or curved segments.
 - **Sharp corner between curves:** Hold `Alt` while dragging a handle to move it independently.
 - **Re-link handles:** Double-click the point to snap handles back together.
 - **Select multiple points:** Hold `Ctrl` (or `Option` on Mac) while clicking a point to add it to the selection 
+
+### 5. Polyline
+
+Create straight-line polylines with straight segments only.
+
+**Drawing:**
+
+- Click to add points.
+- **Open path:** Double-click to finish.
+- **Closed shape:** Click back on the first point.
+
+**Editing:**
+
+- **Delete points:** Press `Del` or `Backspace` while points are selected.
+- **Move vertices:** Click and drag points to reposition.
+- **Add vertices:** Hover between points to insert midpoints. 
 
 ## Usage
 
