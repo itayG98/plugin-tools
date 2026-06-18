@@ -1,5 +1,5 @@
 {
-  "name": "@annotorious/plugin-tools-itayG",
+  "name": "@annotorious/plugin-tools-itayg",
   "version": "1.0.0-rc01",
   "description": "A extension to of the original Annotorious library by Rainer Simon. This fork introduces custom modifications and extended features while building upon the original core.",
   "type": "module",
