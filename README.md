@@ -82,7 +82,7 @@ var anno = createImageAnnotator('sample-image', {
 
 mountToolsPlugin(anno);
 
-// ['rectangle', 'polygon', 'ellipse', 'line', 'path']
+// ['rectangle', 'polygon', 'ellipse' , 'circle' , 'line', 'path' , 'polyline']
 console.log(anno.listDrawingTools());
 
 anno.setDrawingTool('path');
@@ -108,7 +108,7 @@ const anno = createOSDAnnotator(viewer, {
 
 mountToolsPlugin(anno);
 
-// ['rectangle', 'polygon', 'ellipse', 'line', 'path']
+// ['rectangle', 'polygon', 'ellipse' , 'circle' , 'line', 'path' , 'polyline']
 console.log(anno.listDrawingTools());
 
 anno.setDrawingTool('path');
