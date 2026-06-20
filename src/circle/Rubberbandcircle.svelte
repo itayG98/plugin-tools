@@ -1,10 +1,8 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from 'svelte';
-  import { ShapeType } from '@annotorious/annotorious';
-  import { getMaskDimensions } from '@annotorious/annotorious';
-  import type { Ellipse, Circle, DrawingMode, Transform } from '@annotorious/annotorious';
+  import type { Ellipse, DrawingMode, Transform } from '@annotorious/annotorious';
 
-  const dispatch = createEventDispatcher<{ create: Circle }>();
+  const dispatch = createEventDispatcher<{ create: Ellipse }>();
   
   /** Props **/
   export let addEventListener: (type: string, fn: EventListener, capture?: boolean) => void;
@@ -45,9 +43,8 @@
   const updateShape = (maybeEvent?: Event) => {
     const evt = (maybeEvent as PointerEvent)|| lastMoveEvent;
 
-    if (origin) {
+    if (origin && evt) {
       anchor = transform.elementToImage(evt!.offsetX, evt!.offsetY);
-
       if (isCtrlPressed) {
         const mw = 2 * Math.abs(anchor[0] - origin[0]);
         const mh = 2 * Math.abs(anchor[1] - origin[1]);
