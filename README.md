@@ -7,7 +7,7 @@ An Annotorious plugin that adds additional drawing tools.
 ## Installation
 
 ```sh
-npm install @annotorious/plugin-tools
+npm install @itaysap/annotorious-plugin-tools
 ```
 
 ## Tools
@@ -74,7 +74,7 @@ import { createImageAnnotator } from '@annotorious/annotorious';
 import { mountPlugin as mountToolsPlugin } from '@itaysap/annotorious-plugin-tools';
 
 import '@annotorious/annotorious/annotorious.css';
-import '@annotorious/plugin-tools/annotorious-plugin-tools.css';
+import '@itaysap/annotorious-plugin-tools/annotorious-plugin-tools.css';
 
 var anno = createImageAnnotator('sample-image', {
   /** Annotorious init options **/
@@ -96,7 +96,7 @@ import { createOSDAnnotator } from '@annotorious/openseadragon';
 import { mountPlugin as mountToolsPlugin } from '../src';
 
 import '@annotorious/openseadragon/annotorious-openseadragon.css';
-import '@annotorious/plugin-tools/annotorious-plugin-tools.css';
+import '@itaysap/annotorious-plugin-tools/annotorious-plugin-tools.css';
 
 const viewer = OpenSeadragon({
   /** OpenSeadragon init options **/
