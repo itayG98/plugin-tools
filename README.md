@@ -71,7 +71,7 @@ The plugin works with both Annotorious versions: **Image Annotator** and **OpenS
 
 ```js
 import { createImageAnnotator } from '@annotorious/annotorious';
-import { mountPlugin as mountToolsPlugin } from '@annotorious/plugin-tools';
+import { mountPlugin as mountToolsPlugin } from '@itaysap/annotorious-plugin-tools';
 
 import '@annotorious/annotorious/annotorious.css';
 import '@annotorious/plugin-tools/annotorious-plugin-tools.css';
