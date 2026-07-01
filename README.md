@@ -23,6 +23,8 @@ Draw ellipses or circles.
 
 Draw circles.
 
+- Hold `CTRL` – Draw from the center outward
+
 ### 3. Line
 
 Draw a straight line between two points.
