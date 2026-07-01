@@ -1,16 +1,8 @@
 {
-  "name": "@annotorious/plugin-tools",
-  "version": "1.6.0",
-  "description": "Additional drawing tools for Annotorious",
-  "author": "Rainer Simon",
-  "license": "BSD-3-Clause",
-  "homepage": "https://annotorious.dev",
-  "funding": "https://steadyhq.com/rainer-simon",
+  "name": "@itaysap/annotorious-plugin-tools",
+  "version": "1.0.0-rc.3",
+  "description": "A extension of the original Annotorious library by Rainer Simon. This fork introduces custom modifications and extended features while building upon the original core.",
   "type": "module",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/annotorious/annotorious-plugin-tools.git"
-  },
   "bugs": {
     "url": "https://github.com/annotorious/annotorious-plugin-tools/issues"
   },
@@ -33,6 +25,15 @@
     },
     "./annotorious-plugin-tools.css": "./dist/annotorious-plugin-tools.css"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itayG98/plugin-tools.git"
+  },
+  "author": "Itay getahun <itai.g98@gmail.com>",
+  "contributors": [
+    "Rainer Simon <hello@rainersimon.io> (Original Author)"
+  ],
+  "license": "BSD-3-Clause",
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
     "@tsconfig/svelte": "^5.0.8",
@@ -45,5 +46,8 @@
   "peerDependencies": {
     "@annotorious/annotorious": "^3.7.22",
     "@annotorious/openseadragon": "^3.7.22"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

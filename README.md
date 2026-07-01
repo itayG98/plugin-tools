@@ -7,7 +7,7 @@ An Annotorious plugin that adds additional drawing tools.
 ## Installation
 
 ```sh
-npm install @annotorious/plugin-tools
+npm install @itaysap/annotorious-plugin-tools
 ```
 
 ## Tools
@@ -19,11 +19,17 @@ Draw ellipses or circles.
 - Hold `SHIFT` – Constrain aspect ratio to circle
 - Hold `CTRL` – Draw from the center outward
 
-### 2. Line
+### 2. Circle
+
+Draw circles.
+
+- Hold `CTRL` – Draw from the center outward
+
+### 3. Line
 
 Draw a straight line between two points.
 
-### 3. Path
+### 4. Path
 
 Create polylines made of straight or curved segments.
 
@@ -43,6 +49,22 @@ Create polylines made of straight or curved segments.
 - **Re-link handles:** Double-click the point to snap handles back together.
 - **Select multiple points:** Hold `Ctrl` (or `Option` on Mac) while clicking a point to add it to the selection 
 
+### 5. Polyline
+
+Create straight-line polylines with straight segments only.
+
+**Drawing:**
+
+- Click to add points.
+- **Open path:** Double-click to finish.
+- **Closed shape:** Click back on the first point.
+
+**Editing:**
+
+- **Delete points:** Press `Del` or `Backspace` while points are selected.
+- **Move vertices:** Click and drag points to reposition.
+- **Add vertices:** Hover between points to insert midpoints. 
+
 ## Usage
 
 The plugin works with both Annotorious versions: **Image Annotator** and **OpenSeadragon Annotator**.
@@ -51,10 +73,10 @@ The plugin works with both Annotorious versions: **Image Annotator** and **OpenS
 
 ```js
 import { createImageAnnotator } from '@annotorious/annotorious';
-import { mountPlugin as mountToolsPlugin } from '@annotorious/plugin-tools';
+import { mountPlugin as mountToolsPlugin } from '@itaysap/annotorious-plugin-tools';
 
 import '@annotorious/annotorious/annotorious.css';
-import '@annotorious/plugin-tools/annotorious-plugin-tools.css';
+import '@itaysap/annotorious-plugin-tools/annotorious-plugin-tools.css';
 
 var anno = createImageAnnotator('sample-image', {
   /** Annotorious init options **/
@@ -62,7 +84,7 @@ var anno = createImageAnnotator('sample-image', {
 
 mountToolsPlugin(anno);
 
-// ['rectangle', 'polygon', 'ellipse', 'line', 'path']
+// ['rectangle', 'polygon', 'ellipse' , 'circle' , 'line', 'path' , 'polyline']
 console.log(anno.listDrawingTools());
 
 anno.setDrawingTool('path');
@@ -76,7 +98,7 @@ import { createOSDAnnotator } from '@annotorious/openseadragon';
 import { mountPlugin as mountToolsPlugin } from '../src';
 
 import '@annotorious/openseadragon/annotorious-openseadragon.css';
-import '@annotorious/plugin-tools/annotorious-plugin-tools.css';
+import '@itaysap/annotorious-plugin-tools/annotorious-plugin-tools.css';
 
 const viewer = OpenSeadragon({
   /** OpenSeadragon init options **/
@@ -88,7 +110,7 @@ const anno = createOSDAnnotator(viewer, {
 
 mountToolsPlugin(anno);
 
-// ['rectangle', 'polygon', 'ellipse', 'line', 'path']
+// ['rectangle', 'polygon', 'ellipse' , 'circle' , 'line', 'path' , 'polyline']
 console.log(anno.listDrawingTools());
 
 anno.setDrawingTool('path');

@@ -13,11 +13,84 @@
 
   const editor = (ellipse: Shape, handle: string, delta: [number, number]) => {
     const initialBounds = ellipse.geometry.bounds;
+    const isCircle = (ellipse.geometry as Ellipse['geometry'] & { isCircle?: boolean }).isCircle === true;
+    const initialCx = ellipse.geometry.cx;
+    const initialCy = ellipse.geometry.cy;
+    const initialRx = ellipse.geometry.rx;
+    const initialRy = ellipse.geometry.ry;
+
+    const [dx, dy] = delta;
+
+    if (isCircle) {
+      const initialR = Math.max(initialRx, initialRy);
+
+      if (handle === 'SHAPE') {
+        const x = initialBounds.minX + dx;
+        const y = initialBounds.minY + dy;
+
+        return {
+          ...ellipse,
+          geometry: {
+            ...ellipse.geometry,
+            cx: initialCx + dx,
+            cy: initialCy + dy,
+            rx: initialR,
+            ry: initialR,
+            isCircle,
+            bounds: {
+              minX: x,
+              minY: y,
+              maxX: x + 2 * initialR,
+              maxY: y + 2 * initialR
+            }
+          }
+        };
+      }
+
+      let r = initialR;
+
+      switch (handle) {
+        case 'TOP':
+          r = Math.max(0, Math.abs(initialCy - (initialBounds.minY + dy)));
+          break;
+
+        case 'BOTTOM':
+          r = Math.max(0, Math.abs((initialBounds.maxY + dy) - initialCy));
+          break;
+
+        case 'LEFT':
+          r = Math.max(0, Math.abs(initialCx - (initialBounds.minX + dx)));
+          break;
+
+        case 'RIGHT':
+          r = Math.max(0, Math.abs((initialBounds.maxX + dx) - initialCx));
+          break;
+      }
+
+      const x = initialCx - r;
+      const y = initialCy - r;
+
+      return {
+        ...ellipse,
+        geometry: {
+          ...ellipse.geometry,
+          cx: initialCx,
+          cy: initialCy,
+          rx: r,
+          ry: r,
+          isCircle,
+          bounds: {
+            minX: x,
+            minY: y,
+            maxX: x + 2 * r,
+            maxY: y + 2 * r
+          }
+        }
+      };
+    }
 
     let [x0, y0] = [initialBounds.minX, initialBounds.minY];
     let [x1, y1] = [initialBounds.maxX, initialBounds.maxY];
-
-    const [dx, dy] = delta;
 
     if (handle === 'SHAPE') {
       x0 += dx;
@@ -64,6 +137,7 @@
       geometry: {
         ...ellipse.geometry,
         cx, cy, rx, ry,
+        isCircle,
         bounds: {
           minX: x,
           minY: y,

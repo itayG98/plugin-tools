@@ -42,6 +42,7 @@
   let isAltPressed = false;
 
   $: geom = shape.geometry;
+  $: isPolyline = (shape.geometry as PolylineGeometry & { isPolyline?: boolean }).isPolyline === true;
 
   $: midpoints = isTouch ? [] : geom.points.reduce<{ point: [number, number], visible: boolean }[]>((all, thisCorner, idx) => {
     const nextCorner = idx === geom.points.length - 1 
@@ -146,6 +147,9 @@
         selectedCorners = [];
       else
         selectedCorners = [...selectedCorners, idx];
+    } else if (isPolyline) {
+      if (!isSelected || selectedCorners.length > 1)
+        selectedCorners = [idx];
     } else {
       const polyline = togglePolylineCorner(shape, idx, viewportScale);
       dispatch('change', polyline);
@@ -157,8 +161,29 @@
     }
   }
 
+  const normalizePolyline = (polyline: Polyline): Polyline => {
+    const points = polyline.geometry.points.map(point => ({
+      type: 'CORNER',
+      point: point.point
+    } as PolylinePoint));
+
+    return {
+      ...polyline,
+      geometry: {
+        ...polyline.geometry,
+        bounds: boundsFromPoints(approximateAsPolygon(points, polyline.geometry.closed)),
+        points,
+        closed: polyline.geometry.closed,
+        isPolyline: true
+      }
+    };
+  }
+
   // Re-establish locked, symmetrical handles on double click
   const onDoubleClick = (idx:  number) => () => {
+    if (isPolyline)
+      return;
+
     const pt = geom.points[idx];
 
     if (pt.type === 'CORNER') return;
@@ -202,7 +227,8 @@
       geometry: {
         bounds,
         points,
-        closed: geom.closed
+        closed: geom.closed,
+        isPolyline : geom.isPolyline
       }
     };
 
@@ -233,6 +259,7 @@
         outHandle: pt.outHandle ? [pt.outHandle[0] + dx, pt.outHandle[1] + dy] : undefined
       } : pt);
     } else if (handle.startsWith('IN-') || handle.startsWith('OUT-')) {
+      if (isPolyline) return polyline as Polyline;
       const [handleType, idxStr] = handle.split('-');
       const idx = parseInt(idxStr);
       
@@ -303,7 +330,8 @@
       geometry: {
         bounds,
         points,
-        closed: geom.closed
+        closed: geom.closed,
+        isPolyline : geom.isPolyline
       }
     } as Polyline;
   }
@@ -323,7 +351,7 @@ const onAddPoint = (midpointIdx: number) => async (evt: PointerEvent) => {
 
     dispatch('change', {
       ...shape,
-      geometry: { points, bounds, closed: geom.closed }
+      geometry: { points, bounds, closed: geom.closed , isPolyline : geom.isPolyline }
     });
 
     await tick();
@@ -359,7 +387,8 @@ const onAddPoint = (midpointIdx: number) => async (evt: PointerEvent) => {
       geometry: { 
         closed: shape.geometry.closed,
         bounds,
-        points 
+        points ,
+        isPolyline : geom.isPolyline
       }
     });
 
@@ -392,6 +421,10 @@ const onAddPoint = (midpointIdx: number) => async (evt: PointerEvent) => {
       window.removeEventListener('keyup', onKeyUp);
     }
   });
+
+  $: if (isPolyline && geom.points.some(point => point.type !== 'CORNER')) {
+    dispatch('change', normalizePolyline(shape));
+  }
 
   $: d = computeSVGPath(geom);
 
@@ -437,7 +470,7 @@ const onAddPoint = (midpointIdx: number) => async (evt: PointerEvent) => {
   </g>
 
   <!-- Bezier handles only when a single corner is selected -->
-  {#if selectedCorners.length === 1}
+  {#if selectedCorners.length === 1 && !isPolyline}
     {@const selectedCorner = selectedCorners[0]}
     {@const corner = geom.points[selectedCorner]}
     {#if corner.type === 'CURVE'}
@@ -466,7 +499,7 @@ const onAddPoint = (midpointIdx: number) => async (evt: PointerEvent) => {
       y={pt.point[1]}
       scale={viewportScale}
       selected={selectedCorners.includes(idx)}
-      on:dblclick={onDoubleClick(idx)}
+      on:dblclick={!isPolyline ? onDoubleClick(idx) : undefined}
       on:pointerenter={onEnterHandle}
       on:pointerleave={onLeaveHandle}
       on:pointerdown={onHandlePointerDown}

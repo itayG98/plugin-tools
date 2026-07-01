@@ -23,12 +23,18 @@
       #content img {
         max-width: 100%;
       }
+
+      #tool-picker {
+        margin-left: 8px;
+        min-width: 140px;
+      }
     </style>
   </head>
   <body>
     <div id="content">
       <p>
-        <button id="current-tool">RECTANGLE</button>
+        <label for="tool-picker">Drawing tool</label>
+        <select id="tool-picker"></select>
       </p>
       <img id="sample-image" src="640px-Hallstatt.jpg" />
     </div>
@@ -64,15 +70,20 @@
         var tools = anno.listDrawingTools();
         console.log(tools);
 
-        var selected = 0;
+        var toolToggle = document.getElementById('tool-picker');
 
-        var toolToggle = document.getElementById('current-tool');
-        toolToggle.addEventListener('click', function() {
-          selected += 1;
-          selected = selected % tools.length;
+        tools.forEach(function(tool) {
+          var option = document.createElement('option');
+          option.value = tool;
+          option.textContent = tool.toUpperCase();
+          toolToggle.appendChild(option);
+        });
 
-          var tool = tools[selected];
-          toolToggle.innerHTML = tool.toUpperCase();
+        anno.setDrawingTool('circle');
+        toolToggle.value = 'circle';
+
+        toolToggle.addEventListener('change', function() {
+          var tool = toolToggle.value;
           anno.setDrawingTool(tool);
         });
       }
