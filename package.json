@@ -1,6 +1,6 @@
 {
   "name": "@itaysap/annotorious-plugin-tools",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0",
   "description": "A extension of the original Annotorious library by Rainer Simon. This fork introduces custom modifications and extended features while building upon the original core.",
   "type": "module",
   "bugs": {
